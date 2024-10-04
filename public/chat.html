@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+</head>
+<body>
+  <h1>Chat</h1>
+  <div id="chatHistory"></div>
+  <form id="messageForm">
+    <input type="text" id="message" required>
+    <button type="submit">Send</button>
+  </form>
+  <script>
+    const username = localStorage.getItem('username');
+    if (!username) {
+      window.location.href = '/';
+    }
+
+    const ws = new WebSocket('ws://localhost:3000');
+
+    ws.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      if (data.type === 'history') {
+        data.messages.forEach(message => {
+          displayMessage(message);
+        });
+      } else if (data.type === 'message') {
+        displayMessage(data);
+      }
+    };
+
+    document.getElementById('messageForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const message = document.getElementById('message').value;
+      ws.send(JSON.stringify({ type: 'message', username, text: message }));
+      document.getElementById('message').value = '';
+    });
+
+    function displayMessage(message) {
+      const chatHistory = document.getElementById('chatHistory');
+      const messageElement = document.createElement('div');
+      messageElement.textContent = `${message.username}: ${message.text}`;
+      chatHistory.appendChild(messageElement);
+    }
+  </script>
+</body>
+</html>
