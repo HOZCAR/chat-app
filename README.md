@@ -18,6 +18,29 @@ This is a simple chat application built with Node.js, Express, WebSocket, Playwr
 
 1. Clone the repository:
 
-   ```sh
-   git clone https://github.com/your-username/chat-app.git
+   git clone https://github.com/HOZCAR/chat-app.git
    cd chat-app
+2. Install the dependencies:
+   
+   npm install
+
+## Running the Application
+
+1. Start the server:
+
+node index.js
+
+2. Frontend:
+
+Navigate to http://localhost:3000
+
+
+## Running Automated Tests
+
+1. Install Playwright browsers
+
+npx playwright install
+
+2. Run the tests
+
+npm test
